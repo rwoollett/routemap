@@ -39,9 +39,10 @@ namespace Rest::Factory
     IdToProductMap associations_;
 
   public:
-    HttpFactory(std::function<size_t(const IdentifierType &r)> hf,
+    HttpFactory(long unsigned int bucket_size,
+                std::function<size_t(const IdentifierType &r)> hf,
                 std::function<bool(const IdentifierType &r, const IdentifierType &r2)> eq)
-        : associations_{150, hf, eq}
+        : associations_{bucket_size, hf, eq}
     {
     }
 
@@ -51,9 +52,7 @@ namespace Rest::Factory
     }
 
     bool
-    Register(const IdentifierType &id, ProductCreator creator,
-             std::function<size_t(const IdentifierType &r)> hf,
-             std::function<bool(const IdentifierType &r, const IdentifierType &r2)> eq)
+    Register(const IdentifierType &id, ProductCreator creator)
     {
       return associations_.insert({id, creator}).second != 0;
     }
